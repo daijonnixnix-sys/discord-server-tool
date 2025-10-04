@@ -1,0 +1,31 @@
+
+name: Discord Server Cloner Bot
+
+on:
+  workflow_dispatch:   # Sirf manually trigger hoga
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run Server Cloner Bot
+      env:
+        TOKEN: ${{ secrets.DISCORD_TOKEN }}
+        ALLOWED_USER_IDS: ${{ secrets.ALLOWED_USER_IDS }}
+      run: |
+        echo "🚀 Starting Discord Server Cloner Bot..."
+        echo "🤖 Bot will now listen for !clone commands on Discord"
+        node index.js
